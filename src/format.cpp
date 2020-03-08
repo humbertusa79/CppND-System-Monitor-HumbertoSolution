@@ -20,6 +20,6 @@ string Format::ElapsedTime(long seconds) {
   min = time / 60;
   time = time % 60;
   sec = time;
-  sprintf(buffer,"%.2d : %.2d : %.2d", hrs, min, sec);
+  sprintf(buffer,"%.2ld : %.2ld : %.2ld", hrs, min, sec);
   return buffer;
 }
