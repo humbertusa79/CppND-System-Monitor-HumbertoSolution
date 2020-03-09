@@ -1,15 +1,15 @@
 #include "processor.h"
 
 // TODO: Return the aggregate CPU utilization
-float Processor::Utilization() { 
+double Processor::Utilization() { 
   vector<string> cpuInformation = LinuxParser::CpuUtilization();
-  float previdle = prevIdle + prevIOWait;
-  float idle = stof(cpuInformation[CPUStates::kIdle_]) + stof(cpuInformation[CPUStates::kIOwait_]);
-  float prevNonIdle = prevUser + prevNice + prevSystem + prevIrq + prevSoftIrq + prevSteal;
-  float nonIdle = stof(cpuInformation[CPUStates::kUser_]) + stof(cpuInformation[CPUStates::kNice_]) + stof(cpuInformation[CPUStates::kSystem_]) + stof(cpuInformation[CPUStates::kIRQ_]) + stof(cpuInformation[CPUStates::kSoftIRQ_]) + stof(cpuInformation[CPUStates::kSteal_]);
-  float prevTotal = previdle + prevNonIdle;
-  float total = idle + nonIdle;
-  float totald = total - prevTotal;
-  float idled = idle + prevIdle;
+  double previdle = prevIdle + prevIOWait;
+  double idle = stod(cpuInformation[CPUStates::kIdle_]) + stod(cpuInformation[CPUStates::kIOwait_]);
+  double prevNonIdle = prevUser + prevNice + prevSystem + prevIrq + prevSoftIrq + prevSteal;
+  double nonIdle = stod(cpuInformation[CPUStates::kUser_]) + stod(cpuInformation[CPUStates::kNice_]) + stod(cpuInformation[CPUStates::kSystem_]) + stod(cpuInformation[CPUStates::kIRQ_]) + stod(cpuInformation[CPUStates::kSoftIRQ_]) + stod(cpuInformation[CPUStates::kSteal_]);
+  double prevTotal = previdle + prevNonIdle;
+  double total = idle + nonIdle;
+  double totald = total - prevTotal;
+  double idled = idle + prevIdle;
   return (totald - idled)/totald;
 }

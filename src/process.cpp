@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <stdio.h>
 
 #include "process.h"
 
@@ -18,7 +19,14 @@ int Process::Pid() { return id; }
 float Process::CpuUtilization() { return cpuUtilization; }
 
 // TODO: Return the command that generated this process
-string Process::Command() { return command; }
+string Process::Command() { 
+  if(command.size() > 50){
+    string command_sub_str = command.substr(0,49);
+    command_sub_str.append("...");
+    return command_sub_str;
+  }
+  return command; 
+}
 
 // TODO: Return this process's memory utilization
 string Process::Ram() { return ram; }
@@ -32,7 +40,7 @@ long int Process::UpTime() { return upTime; }
 // TODO: Overload the "less than" comparison operator for Process objects
 // REMOVE: [[maybe_unused]] once you define the function
 bool Process::operator>(Process const& a) const { 
-  float cpu1 = this->cpuUtilization;
-  float cpu2 = a.cpuUtilization;
+  double cpu1 = this->cpuUtilization;
+  double cpu2 = a.cpuUtilization;
   return  cpu1 > cpu2;
 }

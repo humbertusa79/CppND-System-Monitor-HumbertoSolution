@@ -231,12 +231,13 @@ string LinuxParser::Ram(int pid) {
     while(getline(fileStream, line)) {
       std::istringstream stringStream(line);
       stringStream >> memTitle >> memValue;
-      if(memTitle == "VmSize:") {
+      //Using VmData instead of VmSize per review comment because as explained  VmData  gives the exact physical memory being used as a part of Physical RAM. i.e. the Code, Data and Stack segments, explained in the man pages.
+      if(memTitle == "VmData:") {
         break;
       }
     }
   }
-  float result = memValue / 1000.0;
+  float result = memValue / 1024.0;
   char value[6];
   sprintf(value,"%.2f",result);
   return value;
@@ -282,7 +283,7 @@ string LinuxParser::User(int pid) {
         values.clear();
       }
   }
-  return "";
+  return NULL;
 }
 
 // TODO: Read and return the uptime of a process
