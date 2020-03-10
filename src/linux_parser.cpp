@@ -232,7 +232,7 @@ string LinuxParser::Ram(int pid) {
       std::istringstream stringStream(line);
       stringStream >> memTitle >> memValue;
       //Using VmData instead of VmSize per review comment because as explained  VmData  gives the exact physical memory being used as a part of Physical RAM. i.e. the Code, Data and Stack segments, explained in the man pages.
-      if(memTitle == "VmData:") {
+      if(memTitle.compare("VmData:") == 0) {
         break;
       }
     }
@@ -289,22 +289,16 @@ string LinuxParser::User(int pid) {
 // TODO: Read and return the uptime of a process
 // REMOVE: [[maybe_unused]] once you define the function
 long int LinuxParser::UpTime(int pid) {
-  std::ifstream fileStream(kProcDirectory + std::to_string(pid) + kStatFilename);
+  string path = kProcDirectory + std::to_string(pid) + kStatFilename;
+  std::ifstream fileStream(path);
+  string line;
   long int upTime = 0;
-  int index = 0;
-  if(fileStream.is_open()){
-    std::string line;
+  if(fileStream.is_open()) {
     getline(fileStream, line);
-    std::istringstream stringStream(line);
-    std::string value = "";
-    while(std::getline(stringStream, value, ' '))
-    {
-      if(index == 21) {
-        upTime = stol(value) / sysconf(_SC_CLK_TCK);
-        return upTime;
-      }
-      ++index;
-    }  
+    std::istringstream buffer(line);
+    std::istream_iterator<string> begin(buffer), end;
+    vector<string> line_content(begin,end);
+    upTime = (LinuxParser::UpTime() - float(stof(line_content[21])) / sysconf(_SC_CLK_TCK));
   }
   return upTime;
 }

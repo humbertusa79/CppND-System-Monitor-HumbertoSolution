@@ -20,20 +20,17 @@ Processor& System::Cpu() { return cpu_; }
 // TODO: Return a container composed of the system's processes
 vector<Process>& System::Processes() {
   vector<int> processesIds = LinuxParser::Pids();
+  processes_.clear();
   for (unsigned index = 0; index < processesIds.size(); ++index) {
     int id = processesIds[index];
-    string userName = LinuxParser::User(id);
-    float cpuUsage = LinuxParser::CpuUsage(id);
-    string ram = LinuxParser::Ram(id);
-    string cmd =  LinuxParser::Command(id);
-    long int upTime = LinuxParser::UpTime(id);
-    Process process(id, userName, cpuUsage, ram, cmd, upTime);
+    Process process(id);
     processes_.emplace_back(process);
   }
+  sortProcesses();
   return processes_;
 }
 
-bool compare(const Process p1,const Process p2) {
+bool compare(Process p1, Process p2) {
   return p1 > p2;
 }
 
