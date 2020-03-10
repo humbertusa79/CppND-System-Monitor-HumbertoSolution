@@ -1,6 +1,5 @@
 #include "processor.h"
 
-// TODO: Return the aggregate CPU utilization
 double Processor::Utilization() { 
   vector<string> cpuInformation = LinuxParser::CpuUtilization();
   double previdle = prevIdle + prevIOWait;
